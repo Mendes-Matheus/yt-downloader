@@ -1,0 +1,13 @@
+services:
+  yt-downloader:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      # Montar volume para persistir downloads
+      - ./downloads:/app/downloads
+      # Opcional: montar volume para desenvolvimento
+      - ./app:/app/app:ro
+    environment:
+      - PYTHONPATH=/app
+
