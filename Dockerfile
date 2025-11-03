@@ -12,8 +12,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Instalar dependências Python
-RUN pip install --no-cache-dir -r requirements.txt && \
-    pip install jinja2
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app/ ./app/
 

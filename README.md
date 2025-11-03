@@ -136,12 +136,12 @@ RUN pip install fastapi uvicorn yt-dlp jinja2 pydantic python-multipart
 
 ## 🐳 Comandos Úteis
 
-| Ação                 | Comando                              |
-| -------------------- | ------------------------------------ |
-| Subir o container    | `docker compose up`                  |
-| Parar o container    | `docker compose down`                |
-| Reconstruir a imagem | `docker compose up --build`          |
-| Acessar o container  | `docker exec -it yt-downloader bash` |
-| Verificar logs       | `docker compose logs -f`             |
-
+| Ação                       | Comando                              |
+| -------------------------- | ------------------------------------ |
+| Subir o container          | `docker compose up`                  |
+| Parar o container          | `docker compose down`                |
+| Reconstruir a imagem       | `docker compose up --build`          |
+| Acessar o container        | `docker exec -it yt-downloader bash` |
+| Verificar logs             | `docker compose logs -f`             |
+| Construir imagens sem cache| `docker compose build --no-cache`    |
 ---

@@ -146,7 +146,8 @@ async function iniciarDownload() {
 // Funções de Informações do Vídeo
 async function buscarInformacoesVideo(url) {
     try {
-        const response = await fetch(`/info?url=${encodeURIComponent(url)}`);
+        // CORRIGIDO: Mudar de /info?url= para /info/video?url=
+        const response = await fetch(`/info/video?url=${encodeURIComponent(url)}`);
         const data = await response.json();
 
         if (response.ok) {
@@ -156,6 +157,8 @@ async function buscarInformacoesVideo(url) {
         }
     } catch (error) {
         console.error('Erro ao buscar informações:', error);
+        // Opcional: esconder o card de informações em caso de erro
+        document.getElementById('videoInfoCard').style.display = 'none';
     }
 }
 
