@@ -1,10 +1,10 @@
-import yt_dlp
+import time
 from pathlib import Path
 from typing import Dict, Any
-import time
+
+import yt_dlp
 
 from app.services.download_service import BaseDownloadService
-from app.utils.config_utils import DownloadConfig
 
 class VideoService(BaseDownloadService):
     def __init__(self):
@@ -72,4 +72,4 @@ class VideoService(BaseDownloadService):
                     temp_filepath.unlink()
                 except:
                     pass
-            raise Exception(f"Erro no download: {str(e)}")
+            raise Exception(f"Erro no download: {self.formatar_erro_download(e)}")

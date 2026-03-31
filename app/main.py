@@ -1,8 +1,13 @@
+import sys
+from pathlib import Path
+
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
-from pathlib import Path
+
+if __package__ in (None, ""):
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.routers import video, audio, info
 
@@ -38,3 +43,9 @@ async def startup_event():
     Path("app/static").mkdir(exist_ok=True)
     Path("app/templates").mkdir(exist_ok=True)
     print("✓ Diretórios verificados")
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=False)

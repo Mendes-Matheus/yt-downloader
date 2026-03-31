@@ -6,8 +6,10 @@ services:
     volumes:
       # Montar volume para persistir downloads
       - ./downloads:/app/downloads
+      # Compartilhar cookies exportados do host com o container
+      - ./cookies.txt:/app/cookies.txt
       # Opcional: montar volume para desenvolvimento
       - ./app:/app/app:ro
     environment:
       - PYTHONPATH=/app
-
+      - YT_DLP_JS_RUNTIME=node
