@@ -7,6 +7,7 @@ class DownloadRequest(BaseModel):
 
 class AudioRequest(BaseModel):
     url: str
+    qualidade_audio: str = "192"
 
 class DownloadResult(BaseModel):
     status: str

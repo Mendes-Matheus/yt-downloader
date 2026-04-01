@@ -12,27 +12,45 @@ class AudioService(BaseDownloadService):
         super().__init__()
         self.audio_temp_dir = self.config.temp_dir / "audios"
 
-    def _configurar_opcoes_audio(self, pasta: Path) -> Dict:
+    def _normalizar_qualidade_audio(self, qualidade_audio: str) -> str:
+        quality_map = {
+            "320kbps": "320",
+            "256kbps": "256",
+            "192kbps": "192",
+            "128kbps": "128",
+            "64kbps": "64",
+        }
+        allowed_values = {"320", "256", "192", "128", "64"}
+
+        quality_value = (qualidade_audio or "192").strip().lower()
+        if quality_value in quality_map:
+            return quality_map[quality_value]
+        if quality_value in allowed_values:
+            return quality_value
+        return "192"
+
+    def _configurar_opcoes_audio(self, pasta: Path, qualidade_audio: str = "192") -> Dict:
         """Configura opções para download de áudio"""
+        bitrate = self._normalizar_qualidade_audio(qualidade_audio)
         opcoes = self.config.get_base_ydl_opts(pasta)
         opcoes.update({
             'format': 'bestaudio/best',
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
-                'preferredquality': '192',
+                'preferredquality': bitrate,
             }],
         })
         return opcoes
 
-    def baixar_audio_temp(self, url: str) -> Dict[str, Any]:
+    def baixar_audio_temp(self, url: str, qualidade_audio: str = "192") -> Dict[str, Any]:
         """Baixa áudio para arquivo temporário"""
         self.audio_temp_dir.mkdir(exist_ok=True)
 
         temp_basename = f"temp_{int(time.time())}"
         temp_mp3_path = self.audio_temp_dir / f"{temp_basename}.mp3"
 
-        opcoes = self._configurar_opcoes_audio(self.audio_temp_dir)
+        opcoes = self._configurar_opcoes_audio(self.audio_temp_dir, qualidade_audio)
         opcoes['outtmpl'] = str(self.audio_temp_dir / f"{temp_basename}.%(ext)s")
         
         try:

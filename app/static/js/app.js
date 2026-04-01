@@ -1,14 +1,14 @@
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
     configurarEventos();
+    atualizarVisibilidadeQualidade();
 });
 
 function configurarEventos() {
     // Alternar entre vídeo e áudio
     document.querySelectorAll('input[name="tipo"]').forEach(radio => {
         radio.addEventListener('change', function() {
-            document.getElementById('qualidadeContainer').style.display = 
-                this.value === 'video' ? 'block' : 'none';
+            atualizarVisibilidadeQualidade();
         });
     });
 
@@ -24,6 +24,19 @@ function configurarEventos() {
         e.preventDefault();
         iniciarDownload();
     });
+}
+
+function atualizarVisibilidadeQualidade() {
+    const tipoSelecionado = document.querySelector('input[name="tipo"]:checked');
+    const qualidadeVideo = document.getElementById('qualidadeContainer');
+    const qualidadeAudio = document.getElementById('qualidadeAudioContainer');
+
+    if (!tipoSelecionado || !qualidadeVideo || !qualidadeAudio) {
+        return;
+    }
+
+    qualidadeVideo.style.display = tipoSelecionado.value === 'video' ? 'block' : 'none';
+    qualidadeAudio.style.display = tipoSelecionado.value === 'audio' ? 'block' : 'none';
 }
 
 // Funções de Arquivos
@@ -74,6 +87,8 @@ async function iniciarDownload() {
     const url = document.getElementById('url').value.trim();
     const tipo = document.querySelector('input[name="tipo"]:checked').value;
     const qualidade = document.getElementById('qualidade').value;
+    const qualidadeAudioField = document.getElementById('qualidadeAudio');
+    const qualidadeAudio = qualidadeAudioField ? qualidadeAudioField.value : '192';
 
     if (!url) {
         mostrarMensagem('error', 'Por favor, insira uma URL do YouTube');
@@ -88,7 +103,8 @@ async function iniciarDownload() {
         const endpoint = tipo === 'video' ? '/download/video' : '/download/audio';
         const body = {
             url: url,
-            ...(tipo === 'video' && { qualidade: qualidade })
+            ...(tipo === 'video' && { qualidade: qualidade }),
+            ...(tipo === 'audio' && { qualidade_audio: qualidadeAudio })
         };
 
         const response = await fetch(endpoint, {

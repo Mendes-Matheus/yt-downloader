@@ -121,6 +121,19 @@
                   </select>
                 </div>
 
+                <div class="mb-3" id="qualidadeAudioContainer" style="display: none">
+                  <label for="qualidadeAudio" class="form-label"
+                    >Qualidade do Áudio (MP3)</label
+                  >
+                  <select class="form-select" id="qualidadeAudio">
+                    <option value="320">320 kbps</option>
+                    <option value="256">256 kbps</option>
+                    <option value="192" selected>192 kbps</option>
+                    <option value="128">128 kbps</option>
+                    <option value="64">64 kbps</option>
+                  </select>
+                </div>
+
                 <button
                   type="submit"
                   class="btn btn-primary w-100"
@@ -181,6 +194,27 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/static/js/app.js"></script>
+    <script>
+      (function () {
+        function syncQualityVisibility() {
+          const selected = document.querySelector('input[name="tipo"]:checked');
+          const video = document.getElementById("qualidadeContainer");
+          const audio = document.getElementById("qualidadeAudioContainer");
+
+          if (!selected || !video || !audio) return;
+
+          video.style.display = selected.value === "video" ? "block" : "none";
+          audio.style.display = selected.value === "audio" ? "block" : "none";
+        }
+
+        document.querySelectorAll('input[name="tipo"]').forEach((radio) => {
+          radio.addEventListener("change", syncQualityVisibility);
+          radio.addEventListener("click", syncQualityVisibility);
+        });
+
+        syncQualityVisibility();
+      })();
+    </script>
+    <script src="/static/js/app.js?v=20260331"></script>
   </body>
 </html>

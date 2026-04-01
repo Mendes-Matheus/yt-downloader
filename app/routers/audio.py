@@ -12,7 +12,10 @@ async def download_audio(request: AudioRequest):
     """Endpoint para download de áudio"""
     try:
         audio_service = AudioService()
-        resultado = audio_service.baixar_audio_temp(url=request.url)
+        resultado = audio_service.baixar_audio_temp(
+            url=request.url,
+            qualidade_audio=request.qualidade_audio
+        )
         
         if resultado['status'] == 'sucesso' and os.path.exists(resultado['filepath']):
             return FileResponse(
